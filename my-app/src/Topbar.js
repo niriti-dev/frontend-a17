@@ -1,19 +1,35 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import './topbar.css';
 
 const Topbar = () => {
   return (
     <header className="topbar">
-      {/* Brand / Logo */}
-
       {/* Navigation Links */}
+      
       <nav>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/users">Users</a>
-        <a href="/manuscripts">Manuscripts</a>
+        <NavLink 
+          to="/dashboard"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Dashboard
+        </NavLink>
+        <NavLink 
+          to="/users"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Users
+        </NavLink>
+        <NavLink 
+          to="/manuscripts"
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          Manuscripts
+        </NavLink>
       </nav>
 
       {/* User Profile Section */}
+
       <div className="user-profile">
         <img 
           src="https://via.placeholder.com/36" 

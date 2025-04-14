@@ -13,7 +13,6 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-        <Topbar />
         <SummaryCards />
         <RecentSubmissionsTable />
     </div>

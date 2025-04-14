@@ -1,5 +1,4 @@
 import React from 'react';
-import './Users.css';
 
 function Users() {
   const users = [
@@ -9,9 +8,9 @@ function Users() {
   ];
 
   return (
-    <div className="table-container">
-      <h2>Users List</h2>
-      <table border="1" cellPadding="8">
+    <div className="table-section">
+      <h3>Users List</h3>
+      <table >
         <thead>
           <tr>
             <th>Name</th>
