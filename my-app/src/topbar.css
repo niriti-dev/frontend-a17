@@ -1,0 +1,104 @@
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+  
+  /* --------------------------------------------------------
+     Font-Fallback:
+  -------------------------------------------------------- */
+  :root {
+    /* Typography */
+    --heading-font: "Playfair Display", serif;
+    --body-font: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  
+    /* Colors */
+    --sidebar-bg-gradient: linear-gradient(135deg, #2b2e3d 0%, #222431 100%);
+    --topbar-bg-gradient: linear-gradient(135deg, #1f2a37 0%, #2c3440 100%);
+    --brand-color: #d4af37;
+    --card-bg: #ffffff;
+    --body-bg: #f2f2f7;
+    --text-color: #333;
+    --text-color-light: #ffffff;
+    --text-muted: #777;
+  
+    /* Additional */
+    --sidebar-width: 240px;
+    --border-radius: 6px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+    /* Spacing */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    
+    /* Define topbar height as a variable */
+    --topbar-height: 4rem;  
+  }
+  
+  /* Global settings for html, body, and root container */
+  html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body padding so content doesn’t hide behind the fixed topbar */
+  body {
+    padding-top: var(--topbar-height);
+  }
+  
+  /* --------------------------------------------------------
+     Topbar
+  -------------------------------------------------------- */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--topbar-height);
+    background: var(--topbar-bg-gradient);
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-color-light);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1100;
+  }
+  
+  .topbar h1 {
+    font-family: var(--heading-font);
+    font-size: 1.4rem;
+    margin: 0;
+  }
+  
+  .topbar nav a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    margin-right: var(--spacing-md);
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .topbar nav a:hover {
+    color: var(--brand-color);
+  }
+  
+  /* User Profile on the topbar */
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--brand-color);
+  }
+  
