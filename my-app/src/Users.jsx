@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Users.css';
+import AddUserForm from './AddUserForm';
+import DeleteUserForm from './DeleteUserForm';
+
 
 function Users() {
-  const users = [
+  // TODO: Replace with data fetched from the database
+  const [users, setUsers] = useState([
     { id: 1, name: 'Alice', email: 'alice@example.com', affiliation: 'NYU', role: 'Student' },
     { id: 2, name: 'Bob', email: 'bob@example.com', affiliation: 'Columbia', role: 'Researcher' },
     { id: 3, name: 'Charlie', email: 'charlie@example.com', affiliation: 'MIT', role: 'Instructor' },
-  ];
+  ]);
 
   return (
     <div className="table-container">
@@ -22,19 +26,21 @@ function Users() {
         </thead>
         <tbody>
           {
-            users.map(function(user) {
-              return (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.affiliation}</td>
-                  <td>{user.role}</td>
-                </tr>
-              );
-            })
+            users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.affiliation}</td>
+                <td>{user.role}</td>
+              </tr>
+            ))
           }
         </tbody>
       </table>
+      <hr/>
+      <AddUserForm onAdd={(user) => setUsers([...users, user])} />
+	  <DeleteUserForm onDelete={(email) => setUsers(users.filter(user => user.email !== email))} />
+
     </div>
   );
 }
