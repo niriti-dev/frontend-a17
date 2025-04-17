@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Users from './Users.jsx';
-// import Manuscripts from './Manuscripts.jsx'; // when it's ready
+import Manuscripts from './Manuscripts.jsx'; 
 
 function App() {
   const [view, setView] = useState('users');
@@ -16,8 +16,7 @@ function App() {
 
 
       {view === 'users' && <Users />}
-      {view === 'manuscripts' && <div>Manuscripts view coming soon...</div>}
-      {/* Replace <div>... with <Manuscripts /> once that component exists */}
+      {view === 'manuscripts' && <Manuscripts />}
 	  {view === 'books' && <div>Books view coming soon...</div>}
       {/* Replace <div>... with <Books /> once that component exists */}
     </div>
