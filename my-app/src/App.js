@@ -9,15 +9,19 @@ function App() {
   return (
     <div>
 		<div className="nav-buttons">
-			<button className="nav-btn" onClick={() => setView('users')}>Show Users</button>
-			<button className="nav-btn" onClick={() => setView('manuscripts')}>Show Manuscripts</button>
-			<button className="nav-btn" onClick={() => setView('books')}>Show Books</button>
+			<button className="nav-btn" onClick={() => setView('users')}>Users</button>
+			<button className="nav-btn" onClick={() => setView('manuscripts')}>Manuscripts</button>
+			{/* <button className="nav-btn" onClick={() => setView('books')}>Show Books</button> */}
+      <button className="nav-btn" onClick={() => setView('login')}>Log In</button>
+      <button className="nav-btn" onClick={() => setView('register')}>Sign Up</button>
 		</div>
 
 
       {view === 'users' && <Users />}
       {view === 'manuscripts' && <Manuscripts />}
-	  {view === 'books' && <div>Books view coming soon...</div>}
+	    {view === 'books' && <div>Books view coming soon...</div>}
+      {view === 'login' && <div>Testing login</div>}
+      {view === 'register' && <div>Testing register</div>}
       {/* Replace <div>... with <Books /> once that component exists */}
     </div>
   );
