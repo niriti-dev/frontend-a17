@@ -3,6 +3,7 @@ import './Users.css';
 import AddUserForm from './AddUserForm';
 import DeleteUserForm from './DeleteUserForm';
 import axios from 'axios';
+import {API_BASE} from './App.js';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -10,9 +11,8 @@ function Users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://tinostinostinos.pythonanywhere.com/people");
+        const res = await axios.get(`${API_BASE}/people`);
         const arr = Object.values(res.data);
-        arr[0]["roles"].push("NYU");
         arr.forEach(elem=>{
           elem.roles = elem.roles.join(", ");
         })
@@ -25,7 +25,6 @@ function Users() {
     fetchUsers();
   }, []); // run once on component mount
 
-  console.log(users);
   return (
     <div className="table-container">
       <h2>Users List</h2>
