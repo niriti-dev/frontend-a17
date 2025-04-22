@@ -1,17 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Users.css';
 import AddUserForm from './AddUserForm';
 import DeleteUserForm from './DeleteUserForm';
-
+import axios from 'axios';
 
 function Users() {
-  // TODO: Replace with data fetched from the database
-  const [users, setUsers] = useState([
-    { id: 1, name: 'Alice', email: 'alice@example.com', affiliation: 'NYU', role: 'Student' },
-    { id: 2, name: 'Bob', email: 'bob@example.com', affiliation: 'Columbia', role: 'Researcher' },
-    { id: 3, name: 'Charlie', email: 'charlie@example.com', affiliation: 'MIT', role: 'Instructor' },
-  ]);
+  const [users, setUsers] = useState([]);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("http://tinostinostinos.pythonanywhere.com/people");
+        const arr = Object.values(res.data);
+        arr[0]["roles"].push("NYU");
+        arr.forEach(elem=>{
+          elem.roles = elem.roles.join(", ");
+        })
+        setUsers(arr);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+
+    fetchUsers();
+  }, []); // run once on component mount
+
+  console.log(users);
   return (
     <div className="table-container">
       <h2>Users List</h2>
@@ -21,26 +35,23 @@ function Users() {
             <th>Name</th>
             <th>Email</th>
             <th>Affiliation</th>
-            <th>Role</th>
+            <th>Roles</th>
           </tr>
         </thead>
         <tbody>
-          {
-            users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.affiliation}</td>
-                <td>{user.role}</td>
-              </tr>
-            ))
-          }
+          {users.map((user) => (
+            <tr key={user.email}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.affiliation}</td>
+              <td>{user.roles}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      <hr/>
+      <hr />
       <AddUserForm onAdd={(user) => setUsers([...users, user])} />
-	  <DeleteUserForm onDelete={(email) => setUsers(users.filter(user => user.email !== email))} />
-
+      <DeleteUserForm onDelete={(email) => setUsers(users.filter(user => user.email !== email))} />
     </div>
   );
 }
