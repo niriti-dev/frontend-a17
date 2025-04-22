@@ -1,17 +1,19 @@
-import React from "react";
-import './Users.css';
+import React, { useState } from 'react';
+import AddManuscriptForm from './AddManuscriptForm';
+import DeleteManuscriptForm from './DeleteManuscriptForm';
+import './Manuscripts.css';
 
 function Manuscripts() {
-  const manuscripts = [
-    { id: 1, author: "Alice Johnson", title: "Arctic Adaptations in Reindeer", text: "This manuscript explores genomic changes supporting cold-weather survival."},
-    { id: 2, author: "Brian Lee", title: "Fibroblast Regeneration Dynamics", text: "A comparative RNA-seq study of regenerative vs. fibrotic healing."},
-    { id: 3, author: "Carmen Nguyen", title: "Urban Algae Systems", text: "Designs for algae infrastructure in climate-resilient cities."},
-    { id: 4, author: "Daniel Smith", title: "CRISPR and Bioethics", text: "Analyzing public perception of gene editing in organ donor animals."}
-  ];
+  // Dummy data for manuscripts
+  const [manuscripts, setManuscripts] = useState([
+    { id: 1, author_name: 'Test Author', title: 'Test Manuscript', text: 'This is a test manuscript.' },
+    { id: 2, author_name: 'Jane Doe', title: 'Quantum Theory', text: 'Exploring quantum fields in detail...' },
+    { id: 3, author_name: 'John Smith', title: 'AI in Healthcare', text: 'Using ML to improve diagnostics...' },
+  ]);
 
   return (
     <div className="table-container">
-      <h2>Manuscripts List</h2>
+      <h2>Manuscripts</h2>
       <table border="1" cellPadding="8">
         <thead>
           <tr>
@@ -21,19 +23,21 @@ function Manuscripts() {
           </tr>
         </thead>
         <tbody>
-        {
-            manuscripts.map(function(manuscript) {
-              return (
-                <tr key={manuscript.id}>
-                  <td>{manuscript.author}</td>
-                  <td>{manuscript.title}</td>
-                  <td>{manuscript.text}</td>
-                </tr>
-              );
-            })
+          {
+            manuscripts.map((manu) => (
+              <tr key={manu.id}>
+                <td>{manu.author_name}</td>
+                <td>{manu.title}</td>
+                <td>{manu.text}</td>
+              </tr>
+            ))
           }
         </tbody>
       </table>
+      <hr/>
+      <AddManuscriptForm onAdd={(manu) => setManuscripts([...manuscripts, manu])} />
+      <DeleteManuscriptForm onDelete={(title) => setManuscripts(manuscripts.filter(m => m.title !== title))} />
+  
     </div>
   );
 }
