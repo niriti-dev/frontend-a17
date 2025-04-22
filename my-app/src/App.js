@@ -30,3 +30,4 @@ function App() {
 }
 
 export default App;
+export const API_BASE = "http://tinostinostinos.pythonanywhere.com";
