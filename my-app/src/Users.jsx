@@ -12,7 +12,6 @@ function Users() {
       try {
         const res = await axios.get("http://tinostinostinos.pythonanywhere.com/people");
         const arr = Object.values(res.data);
-        arr[0]["roles"].push("NYU");
         arr.forEach(elem=>{
           elem.roles = elem.roles.join(", ");
         })
@@ -50,6 +49,7 @@ function Users() {
         </tbody>
       </table>
       <hr />
+      {/* TODO: USE API server to update the database as well. */}
       <AddUserForm onAdd={(user) => setUsers([...users, user])} />
       <DeleteUserForm onDelete={(email) => setUsers(users.filter(user => user.email !== email))} />
     </div>
