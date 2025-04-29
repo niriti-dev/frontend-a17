@@ -1,24 +1,45 @@
 import React, { useState } from 'react';
 import './login.css';
+import axios from 'axios';
+import {API_BASE} from './App.js';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [affiliation, setAffiliation] = useState('');
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-
-    const roles = ['Author']; // always assigned
-
-    console.log('Signing up with:', {
+    
+    const roles = ['Author'];
+  
+    const userData = {
       email,
       password,
       affiliation,
       roles
-    });
+    };
+  
+    try {
+      const response = await axios.post(`${API_BASE}/people/create`, userData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      alert('Sign-up successful!');
+      setEmail('');
+      setPassword('');
+      setAffiliation('');
 
-    // Submit to backend
+    } catch (error) {
+      console.error('Error during sign-up:', error);
+      if (error.response) {
+        alert('Error: ' + error.response.data.message);
+      } else {
+        alert('Something went wrong. Please try again later.');
+      }
+    }
   };
 
   return (
