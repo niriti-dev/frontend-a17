@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AddManuscriptForm from './AddManuscriptForm';
 import DeleteManuscriptForm from './DeleteManuscriptForm';
 import './Manuscripts.css';
+import { API_BASE } from './App';
+import axios from 'axios';
 
 function Manuscripts() {
   // Dummy data for manuscripts
-  const [manuscripts, setManuscripts] = useState([
-    { id: 1, author_name: 'Test Author', title: 'Test Manuscript', text: 'This is a test manuscript.' },
-    { id: 2, author_name: 'Jane Doe', title: 'Quantum Theory', text: 'Exploring quantum fields in detail...' },
-    { id: 3, author_name: 'John Smith', title: 'AI in Healthcare', text: 'Using ML to improve diagnostics...' },
-  ]);
+  const [manuscripts, setManuscripts] = useState([]);
 
+  useEffect(()=>{
+    const fetchManuscripts = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/manuscripts`);
+        const data = res.data;
+        console.log(data);
+        setManuscripts(data);
+      }
+      catch (err){
+        console.log(err);
+      }
+    };
+    fetchManuscripts();
+  }, []);
+
+  // console.log(manuscripts);
   return (
     <div className="table-container">
       <h2>Manuscripts</h2>
@@ -19,16 +33,14 @@ function Manuscripts() {
           <tr>
             <th>Author</th>
             <th>Title</th>
-            <th>Text</th>
           </tr>
         </thead>
         <tbody>
           {
             manuscripts.map((manu) => (
               <tr key={manu.id}>
-                <td>{manu.author_name}</td>
-                <td>{manu.title}</td>
-                <td>{manu.text}</td>
+                <td>{manu.author}</td>
+                <td>{manu.latest_version.title}</td>
               </tr>
             ))
           }

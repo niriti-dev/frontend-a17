@@ -1,0 +1,32 @@
+/* temporary file for login and sign up css - to be merged later */
+.auth-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 2em;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .auth-container h2 {
+    text-align: center;
+  }
+  
+  .auth-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .auth-container input {
+    margin: 0.5em 0;
+    padding: 0.75em;
+    font-size: 1em;
+  }
+  
+  .auth-container button {
+    margin-top: 1em;
+    padding: 0.75em;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  
