@@ -14,7 +14,6 @@ function Manuscripts() {
       try {
         const res = await axios.get(`${API_BASE}/manuscripts`);
         const data = res.data;
-        console.log(data);
         setManuscripts(data);
       }
       catch (err){

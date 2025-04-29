@@ -50,8 +50,6 @@ function Users() {
       </table>
       <hr />
       {/* TODO: USE API server to update the database as well. */}
-      <AddUserForm onAdd={(user) => setUsers([...users, user])} />
-      <DeleteUserForm onDelete={(email) => setUsers(users.filter(user => user.email !== email))} />
     </div>
   );
 }
