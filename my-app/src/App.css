@@ -41,7 +41,9 @@
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin: 20px 0;
+  width: 100%; /* ✅ full width */
+  background-color: #566179; /* optional navbar background */
+  padding: 12px 0;
 }
 
 .nav-btn {
