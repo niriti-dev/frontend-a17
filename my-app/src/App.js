@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom';
 
 import Topbar       from './Topbar';
-import Users        from './Users';
-import Manuscripts  from './Manuscripts';
+import Users        from './users/Users.jsx';
+import Manuscripts  from './manuscripts/Manuscripts.jsx';
 import Books        from './Books.jsx';
 import Login        from './login.jsx';
 import SignUp       from './signup';
