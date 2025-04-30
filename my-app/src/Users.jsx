@@ -21,7 +21,7 @@ function Users() {
   }, []);
 
   return (
-    <section className="users">         
+    <section className="users">       
       <h2>Users List</h2>
 
       <table>
@@ -44,8 +44,6 @@ function Users() {
           ))}
         </tbody>
       </table>
-
-
     </section>
   );
 }

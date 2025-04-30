@@ -1,29 +1,19 @@
+// src/Topbar.jsx
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default function Topbar() {
+  const btn = ({ isActive }) => `nav-btn${isActive ? ' active' : ''}`;
+
   return (
     <header className="topbar">
-
       <nav className="topbar-nav">
-        <NavLink to="/dashboard"   className="nav-btn">
-          Dashboard
-        </NavLink>
-        <NavLink to="/users"       className="nav-btn">
-          Users
-        </NavLink>
-        <NavLink to="/manuscripts" className="nav-btn">
-          Manuscripts
-        </NavLink>
-        <NavLink to="/books"       className="nav-btn">
-          Books
-        </NavLink>
-        <NavLink to="/login"       className="nav-btn">
-          Log&nbsp;In
-        </NavLink>
-        <NavLink to="/signup"      className="nav-btn">
-          Sign&nbsp;Up
-        </NavLink>
+        <NavLink to="/dashboard"   className={btn}>Dashboard</NavLink>
+        <NavLink to="/users"       className={btn}>Users</NavLink>
+        <NavLink to="/manuscripts" className={btn}>Manuscripts</NavLink>
+        <NavLink to="/books"       className={btn}>Books</NavLink>
+        <NavLink to="/login"       className={btn}>Log&nbsp;In</NavLink>
+        <NavLink to="/signup"      className={btn}>Sign&nbsp;Up</NavLink>
       </nav>
     </header>
   );
