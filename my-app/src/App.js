@@ -13,8 +13,6 @@ import Books        from './Books.jsx';
 import Login        from './login.jsx';
 import SignUp       from './signup';
 
-import './App.css';
-
 export const API_BASE =
   'http://tinostinostinos.pythonanywhere.com';
 
