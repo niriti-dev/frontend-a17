@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import './Users.css';
-import AddUserForm from './AddUserForm';
-import DeleteUserForm from './DeleteUserForm';
 import axios from 'axios';
-import {API_BASE} from './App.js';
+import { API_BASE } from './App.js';      
 
 function Users() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    (async () => {
       try {
-        const res = await axios.get(`${API_BASE}/people`);
-        const arr = Object.values(res.data);
-        arr.forEach(elem=>{
-          elem.roles = elem.roles.join(", ");
-        })
-        setUsers(arr);
+        const res  = await axios.get(`${API_BASE}/people`);
+        const data = Object.values(res.data).map(p => ({
+          ...p,
+          roles: p.roles.join(', '),
+        }));
+        setUsers(data);
       } catch (err) {
-        console.error("Error fetching users:", err);
+        console.error('Error fetching users:', err);
       }
-    };
-
-    fetchUsers();
-  }, []); // run once on component mount
+    })();
+  }, []);
 
   return (
-    <div className="table-container">
+    <section className="users">         
       <h2>Users List</h2>
-      <table border="1" cellPadding="8">
+
+      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -38,19 +34,19 @@ function Users() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.email}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.affiliation}</td>
-              <td>{user.roles}</td>
+          {users.map(u => (
+            <tr key={u.email}>
+              <td>{u.name}</td>
+              <td>{u.email}</td>
+              <td>{u.affiliation}</td>
+              <td>{u.roles}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <hr />
-      {/* TODO: USE API server to update the database as well. */}
-    </div>
+
+
+    </section>
   );
 }
 

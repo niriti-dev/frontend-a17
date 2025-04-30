@@ -1,32 +1,40 @@
-import React, { useState } from 'react';
+// src/App.js
+import React from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+
+import Topbar       from './Topbar';
+import Users        from './Users';
+import Manuscripts  from './Manuscripts';
+import Books        from './Books.jsx';
+import Login        from './login.jsx';
+import SignUp       from './signup';
+
 import './App.css';
-import Users from './Users.jsx';
-import Manuscripts from './Manuscripts.jsx'; 
-import Books from './Books.jsx'; 
-import Login from './login.jsx';
-import SignUp from './signup.jsx';
 
-function App() {
-  const [view, setView] = useState('users');
+export const API_BASE =
+  'http://tinostinostinos.pythonanywhere.com';
 
+export default function App() {
   return (
-    <div>
-      <div className="nav-buttons">
-        <button className="nav-btn" onClick={() => setView('users')}>Users</button>
-        <button className="nav-btn" onClick={() => setView('manuscripts')}>Manuscripts</button>
-        {/* <button className="nav-btn" onClick={() => setView('books')}>Show Books</button> */}
-        <button className="nav-btn" onClick={() => setView('login')}>Log In</button>
-        <button className="nav-btn" onClick={() => setView('register')}>Sign Up</button>
-      </div>
+    <BrowserRouter>
+      <Topbar />
 
-      {view === 'users' && <Users />}
-      {view === 'manuscripts' && <Manuscripts />}
-      {view === 'books' && <Books />}
-      {view === 'login' && <Login />}
-      {view === 'register' && <SignUp />}
-    </div>
+      <main className="content">
+        <Routes>
+          <Route path="/"            element={<Navigate to="/dashboard" replace />} />
+          <Route path="/users"       element={<Users        />} />
+          <Route path="/manuscripts" element={<Manuscripts  />} />
+          <Route path="/books"       element={<Books        />} />
+          <Route path="/login"       element={<Login        />} />
+          <Route path="/signup"      element={<SignUp       />} />
+          <Route path="*"            element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
   );
 }
-
-export default App;
-export const API_BASE = "http://tinostinostinos.pythonanywhere.com";

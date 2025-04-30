@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AddManuscriptForm from './AddManuscriptForm';
 import DeleteManuscriptForm from './DeleteManuscriptForm';
-import './Manuscripts.css';
 import { API_BASE } from './App';
 import axios from 'axios';
 
