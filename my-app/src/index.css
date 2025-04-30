@@ -1,5 +1,5 @@
 /* --------------------------------------------------------
-   Design Tokens (CSS Custom Properties)
+   Design Tokens
 -------------------------------------------------------- */
 :root {
   /* Typography */
@@ -48,12 +48,12 @@ body {
   color: var(--text-color);
   font-family: var(--body-font);
 
-  display: flex;              /* vertical stack: header → content */
+  display: flex;             
   flex-direction: column;
   overflow-x: hidden;
 }
 
-/* React root (or wrapper) stretches with body */
+/* React root stretches with body */
 #root,
 .app-container {
   flex: 1 0 100%;             /* grow, don’t shrink, whole row */
@@ -148,7 +148,6 @@ body {
 }
 /* ========================================================
  Topbar navigation fixes
- (works with Topbar.jsx that uses className="nav-btn")
  ======================================================== */
 
 /* lay the links out horizontally */
@@ -174,12 +173,11 @@ body {
   outline: none;
 }
 
-/* active route (NavLink adds .active automatically) */
+/* active route */
 .nav-btn.active {
   background: rgba(212 175 55 / 0.4);
   font-weight: 600;
 }
-
 
 
 
@@ -241,7 +239,7 @@ body {
   margin-bottom: var(--spacing-lg);
 }
 .table-section h3 {
-  font-family: var(--heading-font);
+  /* font-family: var(--heading-font); */
   margin-bottom: var(--spacing-md);
   color: var(--brand-color);
   font-size: 1.2rem;

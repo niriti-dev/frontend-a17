@@ -24,8 +24,8 @@ function Manuscripts() {
 
   // console.log(manuscripts);
   return (
-    <div className="table-container">
-      <h2>Manuscripts</h2>
+    <div className="table-section">
+      <h3>Manuscripts</h3>
       <table border="1" cellPadding="8">
         <thead>
           <tr>

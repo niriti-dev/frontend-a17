@@ -18,8 +18,8 @@ function Manuscripts() {
   }, []);
 
   return (
-    <div className="table-container">
-    <h2>Titles</h2>
+    <div className="table-section">
+    <h3>Titles</h3>
     {data ? (
       <table border="1" cellPadding="8">
         <thead>

@@ -21,8 +21,8 @@ function Users() {
   }, []);
 
   return (
-    <section className="users">       
-      <h2>Users List</h2>
+    <section className="table-section">       
+      <h3>Users List</h3>
 
       <table>
         <thead>
