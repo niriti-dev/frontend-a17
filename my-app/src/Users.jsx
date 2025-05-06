@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './Users.css';
-import AddUserForm from './AddUserForm';
-import DeleteUserForm from './DeleteUserForm';
 import axios from 'axios';
 import {API_BASE} from './App.js';
 
@@ -25,6 +23,14 @@ function Users() {
     fetchUsers();
   }, []); // run once on component mount
 
+  const updateUser = (email) => {
+    console.log("Update clicked for:", email);
+  };
+
+  const deleteUser = async (email) => {
+    console.log("Delete clicked for:", email);
+  };
+
   return (
     <div className="table-container">
       <h2>Users List</h2>
@@ -35,6 +41,7 @@ function Users() {
             <th>Email</th>
             <th>Affiliation</th>
             <th>Roles</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -44,12 +51,27 @@ function Users() {
               <td>{user.email}</td>
               <td>{user.affiliation}</td>
               <td>{user.roles}</td>
+              <td>
+                <div className="action-buttons">
+                  <button
+                    className="btn btn-update"
+                    onClick={() => updateUser(user.email)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="btn btn-delete"
+                    onClick={() => deleteUser(user.email)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <hr />
-      {/* TODO: USE API server to update the database as well. */}
     </div>
   );
 }

@@ -38,3 +38,26 @@
   .table-container tr:hover {
     background-color: #e1efff;
   }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .table-container .btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .table-container .btn-update {
+    background-color: #4CAF50;
+  }
+  
+  .table-container .btn-delete {
+    background-color: #f44336;
+  }
+  
