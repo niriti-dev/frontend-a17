@@ -6,29 +6,34 @@ import {API_BASE} from './App.js';
 function Users() {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/people`);
-        const arr = Object.values(res.data);
-        arr.forEach(elem=>{
-          elem.roles = elem.roles.join(", ");
-        })
-        setUsers(arr);
-      } catch (err) {
-        console.error("Error fetching users:", err);
-      }
-    };
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/people`);
+      const arr = Object.values(res.data);
+      arr.forEach(elem=>{
+        elem.roles = elem.roles.join(", ");
+      })
+      setUsers(arr);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+    }
+  };
 
+  useEffect(() => {
     fetchUsers();
-  }, []); // run once on component mount
+  }, []);
 
   const updateUser = (email) => {
     console.log("Update clicked for:", email);
   };
 
   const deleteUser = async (email) => {
-    console.log("Delete clicked for:", email);
+    try{
+      await axios.delete(`${API_BASE}/people/${email}`);
+      await fetchUsers();
+    } catch (error) {
+      console.error('An error occurred when trying to delete the user', error);
+    }
   };
 
   return (
