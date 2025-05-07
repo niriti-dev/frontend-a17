@@ -1,16 +1,45 @@
-// src/Components/SignUp.jsx
 import React, { useState } from 'react';
 import './login.css';
+import axios from 'axios';
+import {API_BASE} from './App.js';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const [affiliation, setAffiliation] = useState('');
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log('Signing up with', { username, email, password });
-    // Add sign-up logic here
+    
+    const roles = ['Author'];
+  
+    const userData = {
+      email,
+      password,
+      affiliation,
+      roles
+    };
+  
+    try {
+      const response = await axios.post(`${API_BASE}/people/create`, userData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      alert('Sign-up successful!');
+      setEmail('');
+      setPassword('');
+      setAffiliation('');
+
+    } catch (error) {
+      console.error('Error during sign-up:', error);
+      if (error.response) {
+        alert('Error: ' + error.response.data.message);
+      } else {
+        alert('Something went wrong. Please try again later.');
+      }
+    }
   };
 
   return (
@@ -18,19 +47,13 @@ function SignUp() {
       <h2>Sign Up</h2>
       <form onSubmit={handleSignUp}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
           placeholder="Password"
@@ -38,6 +61,19 @@ function SignUp() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
+        <input
+          type="text"
+          placeholder="Affiliation"
+          value={affiliation}
+          onChange={(e) => setAffiliation(e.target.value)}
+          required
+        />
+
+        <p style={{ fontSize: '0.9rem', color: '#555' }}>
+          Note: All users are registered as <strong>Author</strong>. Additional roles can be requested after login.
+        </p>
+
         <button type="submit">Sign Up</button>
       </form>
     </div>
