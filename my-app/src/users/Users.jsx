@@ -1,11 +1,8 @@
-// src/Users.jsx
 import React, { useState } from 'react';
 import useUsers from './useUsers.js';          // ← supplies CRUD helpers
 
 export default function Users() {
-  /* ------------------------------------------------------------------
-     Data layer
-  ------------------------------------------------------------------ */
+
   const {
     users,
     loading,
@@ -14,21 +11,16 @@ export default function Users() {
     deleteUser,   // DELETE
   } = useUsers();
 
-  /* ------------------------------------------------------------------
-     Local UI state
-  ------------------------------------------------------------------ */
-  const [editingEmail, setEditingEmail] = useState(null);   // which row is open
-  const [formValues,   setFormValues]   = useState({});     // live editor fields
+  const [editingEmail, setEditingEmail] = useState(null);   
+  const [formValues,   setFormValues]   = useState({});     
 
-  /* ------------------------------------------------------------------
-     Handlers
-  ------------------------------------------------------------------ */
+
   const startEdit = user => {
     setEditingEmail(user.email);
     setFormValues({
       name:        user.name,
       affiliation: user.affiliation,
-      roles:       user.roles,                // already "role1, role2"
+      roles:       user.roles,                
     });
   };
 
@@ -51,9 +43,6 @@ export default function Users() {
     if (editingEmail === email) setEditingEmail(null);
   };
 
-  /* ------------------------------------------------------------------
-     Render logic
-  ------------------------------------------------------------------ */
   if (loading) return <p className="state">Loading…</p>;
   if (error)   return <p className="state error">Error: {error.message}</p>;
 

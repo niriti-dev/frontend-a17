@@ -25,10 +25,8 @@ export default function useUsers() {
     }
   }, []);
 
-  /* initial load */
   useEffect(() => { load(); }, [load]);
 
-  /* ------------ CRUD wrappers that refresh list afterward ------------ */
   const updateUser  = async (email, data) => {
     await apiUpdate(email, data);
     await load();
@@ -43,6 +41,5 @@ export default function useUsers() {
     console.warn('addUser() not implemented yet');
   };
 
-  /* ------------ public API ------------ */
   return { users, loading, error, addUser, updateUser, deleteUser };
 }

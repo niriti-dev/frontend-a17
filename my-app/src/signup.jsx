@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './login.css';
 import axios from 'axios';
-import {API_BASE} from './App.js';
+import { API_BASE } from './config'
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -26,7 +26,8 @@ function SignUp() {
           'Content-Type': 'application/json'
         }
       });
-  
+      console.log(response)
+
       alert('Sign-up successful!');
       setEmail('');
       setPassword('');

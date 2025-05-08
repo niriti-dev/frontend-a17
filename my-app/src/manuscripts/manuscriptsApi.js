@@ -1,6 +1,6 @@
 // src/manuscripts/manuscriptsApi.js
 import axios from 'axios';
-import { API_BASE } from '../App.js';
+import { API_BASE } from '../config'
 
 export async function fetchManuscripts() {
   const res = await axios.get(`${API_BASE}/manuscripts`);
