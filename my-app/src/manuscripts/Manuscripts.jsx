@@ -1,20 +1,19 @@
 // src/manuscripts/Manuscripts.jsx
 import React, { useState } from 'react';
 import useManuscripts from './useManuscripts';
+
 export default function Manuscripts() {
   const { manuscripts, loading, error,
           updateManuscript, deleteManuscript } = useManuscripts();
 
-  const [editingKey, setEditingKey] = useState(null);   // ← renamed
-  const [form,       setForm]       = useState({ author:'', title:'' });
+  const [editingKey, setEditingKey] = useState(null);
+  const [form, setForm] = useState({ author:'', title:'' });
 
-  /* -------- open  -------- */
   const startEdit = (m, key) => {
     setEditingKey(key);
     setForm({ author: m.author, title: m.latest_version.title });
   };
 
-  /* -------- save -------- */
   const saveEdit = async e => {
     e.preventDefault();
     await updateManuscript(editingKey.realId, {
@@ -24,13 +23,11 @@ export default function Manuscripts() {
     setEditingKey(null);
   };
 
-  /* -------- delete -------- */
   const handleDelete = async key => {
     await deleteManuscript(key.realId);
     if (editingKey?.row === key.row) setEditingKey(null);
   };
 
-  /* -------- render -------- */
   return (
     <section className="table-section">
       <h3>Manuscripts</h3>
@@ -45,7 +42,6 @@ export default function Manuscripts() {
 
             return (
               <React.Fragment key={i}>
-                {/* display row */}
                 <tr onDoubleClick={() => startEdit(m, key)}
                     style={{ cursor:'pointer' }}>
                   <td>{m.author}</td>

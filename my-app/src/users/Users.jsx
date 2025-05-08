@@ -60,7 +60,6 @@ export default function Users() {
         <tbody>
           {users.map(u => (
             <React.Fragment key={u.email}>
-              {/* ───────── DISPLAY ROW ───────── */}
               <tr
                 onDoubleClick={() => startEdit(u)}
                 style={{ cursor: 'pointer' }}
@@ -79,7 +78,6 @@ export default function Users() {
                 </td>
               </tr>
 
-              {/* ───────── INLINE‑EDIT ROW (slides open) ───────── */}
               {editingEmail === u.email && (
                 <tr className="edit-row">
                   <td colSpan="5">
@@ -101,10 +99,10 @@ export default function Users() {
                         name="roles"
                         value={formValues.roles}
                         onChange={handleChange}
-                        placeholder="Roles (comma‑sep.)"
+                        placeholder="Roles (comma-sep.)"
                       />
 
-                      <button type="submit"  className="btn-save">Save</button>
+                      <button type="submit" className="btn-save">Save</button>
                       <button type="button" className="btn-cancel" onClick={cancelEdit}>
                         Cancel
                       </button>

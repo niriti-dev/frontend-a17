@@ -5,6 +5,6 @@ import { useAuth } from './AuthContext';
 export default function ProtectedRoute() {
   const { token } = useAuth();
 
-  if (token === null) return null;          // still checking LS
+  if (token === null) return null;          
   return token ? <Outlet /> : <Navigate to="/login" replace />;
 }

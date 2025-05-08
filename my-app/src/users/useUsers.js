@@ -7,12 +7,10 @@ import {
 } from './usersApi.js';
 
 export default function useUsers() {
-  /* ------------ state ------------ */
-  const [users,   setUsers]   = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState(null);
+  const [error, setError] = useState(null);
 
-  /* ------------ fetch helper (memoised so we can reuse) ------------ */
   const load = useCallback(async () => {
     try {
       setLoading(true);
@@ -27,12 +25,12 @@ export default function useUsers() {
 
   useEffect(() => { load(); }, [load]);
 
-  const updateUser  = async (email, data) => {
+  const updateUser = async (email, data) => {
     await apiUpdate(email, data);
     await load();
   };
 
-  const deleteUser  = async (email) => {
+  const deleteUser = async (email) => {
     await apiDelete(email);
     await load();
   };
