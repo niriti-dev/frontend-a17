@@ -11,9 +11,9 @@ import Users       from './Users';
 import Manuscripts from './manuscripts/Manuscripts';
 import Books       from './Books';
 import Login       from './Login';
-import SignUp      from './signup';
+import SignUp      from './Signup';
 
-// export const API_BASE = 'http://tinostinostinos.pythonanywhere.com';
+import { API_BASE } from './config';
 
 export default function App() {
   return (
@@ -26,7 +26,7 @@ export default function App() {
 }
 
 function AppContent() {
-  const { isAuthed } = useAuth();   
+  const { isAuthed } = useAuth();   // ← now the provider is already above us
 
   return (
     <>
