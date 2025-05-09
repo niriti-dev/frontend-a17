@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useUsers from './useUsers.js';          // ← supplies CRUD helpers
+import './users.css';
 
 export default function Users() {
 
@@ -39,8 +40,10 @@ export default function Users() {
   };
 
   const handleDelete = async email => {
-    await deleteUser(email);
-    if (editingEmail === email) setEditingEmail(null);
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      await deleteUser(email);
+      if (editingEmail === email) setEditingEmail(null);
+    }
   };
 
   if (loading) return <p className="state">Loading…</p>;
@@ -48,38 +51,35 @@ export default function Users() {
 
   return (
     <section className="table-section">
-      <h3>Users List</h3>
+      <h3>Users</h3>
 
       <table>
         <thead>
           <tr>
-            <th>Name</th><th>Email</th><th>Affiliation</th><th>Roles</th><th />
+            <th>Name</th>
+            <th>Email</th>
+            <th>Affiliation</th>
+            <th>Roles</th>
+            <th></th>
           </tr>
         </thead>
-
         <tbody>
           {users.map(u => (
             <React.Fragment key={u.email}>
-              <tr
-                onDoubleClick={() => startEdit(u)}
-                style={{ cursor: 'pointer' }}
-              >
+              <tr onDoubleClick={() => startEdit(u)}>
                 <td>{u.name}</td>
                 <td>{u.email}</td>
                 <td>{u.affiliation}</td>
-                <td>{u.roles}</td>
-                <td>
-                  <button
-                    className="btn-delete"
-                    onClick={() => handleDelete(u.email)}
-                  >
-                    Delete
+                <td>{u.roles.join(', ')}</td>
+                <td style={{ textAlign: 'right' }}>
+                  <button className="btn-delete" onClick={() => handleDelete(u.email)}>
+                    ×
                   </button>
                 </td>
               </tr>
 
               {editingEmail === u.email && (
-                <tr className="edit-row">
+                <tr>
                   <td colSpan="5">
                     <form onSubmit={saveEdit} className="edit-form">
                       <input
@@ -99,9 +99,8 @@ export default function Users() {
                         name="roles"
                         value={formValues.roles}
                         onChange={handleChange}
-                        placeholder="Roles (comma-sep.)"
+                        placeholder="Roles (comma-separated)"
                       />
-
                       <button type="submit" className="btn-save">Save</button>
                       <button type="button" className="btn-cancel" onClick={cancelEdit}>
                         Cancel

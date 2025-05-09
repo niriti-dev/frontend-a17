@@ -8,7 +8,8 @@ export async function fetchManuscripts() {
 }
 
 export async function addManuscript(data) {
-  await axios.post(`${API_BASE}/manuscripts`, data);
+  const res = await axios.put(`${API_BASE}/manuscripts/create`, data);
+  return res.data;
 }
 
 export async function updateManuscript(id, payload) {

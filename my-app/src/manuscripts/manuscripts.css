@@ -1,0 +1,152 @@
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.edit-form {
+  padding: 1.5rem 1rem;
+  background: var(--body-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 80%;
+  max-width: 800px;
+}
+
+.edit-form input,
+.edit-form textarea {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--text-muted);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  background: white;
+  width: 100%;
+}
+
+.edit-form textarea {
+  min-height: 150px;
+  resize: vertical;
+  font-family: var(--body-font);
+  line-height: 1.5;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+.inline-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Button styles */
+.btn-save, .btn-cancel {
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  font-family: var(--body-font);
+  min-width: 100px;
+}
+
+/* Primary button (Save) */
+.btn-save {
+  background: var(--brand-color);
+  border: 1px solid var(--brand-color);
+  color: white;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
+}
+
+/* Secondary button (Cancel) */
+.btn-cancel {
+  background: none;
+  border: 1px solid var(--brand-color);
+  color: var(--brand-color);
+}
+
+.btn-cancel:hover {
+  background: var(--brand-color);
+  color: white;
+}
+
+/* State messages */
+.state {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.state.error {
+  color: #f44336;
+}
+
+/* Table styles */
+.table-section {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.table-section h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--brand-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  border-bottom: 2px solid var(--brand-color);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+}
+
+th {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding-bottom: 1.2rem;
+}
+
+td {
+  color: var(--text-color);
+  border-bottom: 1px solid var(--body-bg);
+}
+
+tbody tr:hover {
+  background: var(--body-bg);
+}
+
+.edit-row td {
+  padding: 0;
+  background: transparent;
+}

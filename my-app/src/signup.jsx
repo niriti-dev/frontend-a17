@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from './config';
+import { useAuth } from './auth/AuthContext';
 import './login.css';
 
 function SignUp() {
@@ -17,6 +18,7 @@ function SignUp() {
   const [errors, setErrors] = useState({});
   
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const validateForm = () => {
     const newErrors = {};
@@ -63,7 +65,8 @@ function SignUp() {
     };
   
     try {
-      const response = await axios.post(
+      // Create user
+      const createResponse = await axios.post(
         `${API_BASE}/people/create`,
         userData,
         {
@@ -73,15 +76,23 @@ function SignUp() {
         }
       );
 
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        affiliation: ''
-      });
-      
-      alert('Sign-up successful! Please log in.');
-      navigate('/login', { replace: true });
+      const createdUser = createResponse.data.person;
+
+      // Login with new credentials
+      const loginResponse = await axios.post(
+        `${API_BASE}/auth/login`,
+        {
+          email: formData.email,
+          password: formData.password
+        },
+        {
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+
+      // Store both token and user data
+      login(loginResponse.data.token, createdUser);
+      navigate('/users', { replace: true });
 
     } catch (err) {
       if (err.response) {

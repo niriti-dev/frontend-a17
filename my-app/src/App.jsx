@@ -9,7 +9,6 @@ import GuestTopbar from './navs/GuestTopbar';
 
 import Users       from './Users';
 import Manuscripts from './manuscripts/Manuscripts';
-import Books       from './Books';
 import Login       from './Login';
 import SignUp      from './Signup';
 
@@ -26,7 +25,7 @@ export default function App() {
 }
 
 function AppContent() {
-  const { isAuthed } = useAuth();   // ← now the provider is already above us
+  const { isAuthed } = useAuth();
 
   return (
     <>
@@ -41,7 +40,6 @@ function AppContent() {
         <Route element={<ProtectedRoute />}>
           <Route path="/users"       element={<Users />} />
           <Route path="/manuscripts" element={<Manuscripts />} />
-          <Route path="/books"       element={<Books />} />
           <Route path="/"            element={<Navigate to="/users" />} />
         </Route>
       </Routes>

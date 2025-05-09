@@ -1,6 +1,26 @@
-/* --------------------------------------------------------
-   Design Tokens
--------------------------------------------------------- */
+/*==============================================================================
+  TABLE OF CONTENTS:
+  1. Design Tokens & Variables
+  2. Reset & Base Styles
+  3. Layout & Structure
+  4. Navigation Components
+    4.1 Sidebar
+    4.2 Topbar
+  5. Content Components
+    5.1 Cards
+    5.2 Tables
+    5.3 Charts
+  6. UI Components
+    6.1 Buttons
+    6.2 Forms
+  7. Overlays & Modals
+  8. Animations
+  9. Responsive Design
+==============================================================================*/
+
+/*==============================================================================
+  1. Design Tokens & Variables
+==============================================================================*/
 :root {
   /* Typography */
   --heading-font: "Playfair Display", serif;
@@ -10,11 +30,11 @@
   --sidebar-bg-gradient: linear-gradient(135deg, #2b2e3d 0%, #222431 100%);
   --topbar-bg-gradient: linear-gradient(135deg, #1f2a37 0%, #2c3440 100%);
   --brand-color: #d4af37;
-  --card-bg:   #ffffff;
-  --body-bg:   #f2f2f7;
-  --text-color:#333;
-  --text-color-light:#ffffff;
-  --text-muted:#777;
+  --card-bg: #ffffff;
+  --body-bg: #f2f2f7;
+  --text-color: #333;
+  --text-color-light: #ffffff;
+  --text-muted: #777;
 
   /* Layout */
   --sidebar-width: 240px;
@@ -27,9 +47,9 @@
   --spacing-lg: 1.5rem;
 }
 
-/* --------------------------------------------------------
-   Basic Reset
--------------------------------------------------------- */
+/*==============================================================================
+  2. Reset & Base Styles
+==============================================================================*/
 *,
 *::before,
 *::after {
@@ -38,31 +58,48 @@
   box-sizing: border-box;
 }
 
-/* --------------------------------------------------------
-   Body – full-width & column flow
--------------------------------------------------------- */
 body {
   min-height: 100vh;
-  width: 100%;                /* make body span full viewport width */
+  width: 100%;
   background: var(--body-bg);
   color: var(--text-color);
   font-family: var(--body-font);
-
-  display: flex;             
+  display: flex;
   flex-direction: column;
   overflow-x: hidden;
 }
 
-/* React root stretches with body */
 #root,
 .app-container {
-  flex: 1 0 100%;             /* grow, don’t shrink, whole row */
+  flex: 1 0 100%;
   width: 100%;
 }
 
-/* --------------------------------------------------------
-   Sidebar
--------------------------------------------------------- */
+/*==============================================================================
+  3. Layout & Structure
+==============================================================================*/
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
+}
+
+.main.shifted {
+  margin-left: var(--sidebar-width);
+}
+
+.content {
+  padding: var(--spacing-lg);
+  flex: 1;
+  overflow-y: auto;
+}
+
+/*==============================================================================
+  4. Navigation Components
+==============================================================================*/
+/* 4.1 Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
@@ -78,7 +115,10 @@ body {
   transition: left 0.3s ease;
   z-index: 1000;
 }
-.sidebar.open { left: 0; }
+
+.sidebar.open {
+  left: 0;
+}
 
 .sidebar .brand {
   font-family: var(--heading-font);
@@ -89,16 +129,21 @@ body {
   letter-spacing: 1px;
 }
 
-/* Navigation section inside sidebar */
-.nav-section { margin-bottom: var(--spacing-lg); }
+.nav-section {
+  margin-bottom: var(--spacing-lg);
+}
+
 .nav-section h4 {
   font-size: 1rem;
   color: var(--brand-color);
   text-align: center;
   margin-bottom: var(--spacing-sm);
 }
+
 .nav-section ul,
-.sidebar ul { list-style: none; }
+.sidebar ul {
+  list-style: none;
+}
 
 .nav-section li a,
 .sidebar li a {
@@ -110,26 +155,19 @@ body {
   margin: 0 var(--spacing-md);
   transition: background 0.3s;
 }
+
 .nav-section li a:hover,
-.sidebar li a:hover { background: rgba(212 175 55 / 0.15); }
+.sidebar li a:hover {
+  background: rgba(212 175 55 / 0.15);
+}
+
 .nav-section li a.active,
 .sidebar li a.active {
   background: rgba(212 175 55 / 0.3);
   font-weight: 600;
 }
 
-/* --------------------------------------------------------
-   Main area & Topbar
--------------------------------------------------------- */
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  transition: margin-left 0.3s ease;
-  margin-left: 0;
-}
-.main.shifted { margin-left: var(--sidebar-width); }
-
+/* 4.2 Topbar */
 .topbar {
   background: var(--topbar-bg-gradient);
   padding: var(--spacing-md) var(--spacing-lg);
@@ -142,21 +180,30 @@ body {
   top: 0;
   z-index: 100;
 }
+
 .topbar h1 {
   font-family: var(--heading-font);
   font-size: 1.4rem;
 }
-/* ========================================================
- Topbar navigation fixes
- ======================================================== */
 
-/* lay the links out horizontally */
 .topbar-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.nav-left {
   display: flex;
   gap: var(--spacing-md);
 }
 
-/* base link look */
+.nav-right {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
 .nav-btn {
   color: var(--text-color-light);
   text-decoration: none;
@@ -166,26 +213,23 @@ body {
   transition: background 0.25s;
 }
 
-/* hover / keyboard focus */
 .nav-btn:hover,
 .nav-btn:focus {
-  background: rgba(212 175 55 / 0.25);   /* brand tint */
+  background: rgba(212 175 55 / 0.25);
   outline: none;
 }
 
-/* active route */
 .nav-btn.active {
   background: rgba(212 175 55 / 0.4);
   font-weight: 600;
 }
-
-
 
 .user-profile {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
 }
+
 .user-profile img {
   width: 36px;
   height: 36px;
@@ -194,24 +238,17 @@ body {
   border: 2px solid var(--brand-color);
 }
 
-/* --------------------------------------------------------
-   Content wrapper
--------------------------------------------------------- */
-.content {
-  padding: var(--spacing-lg);
-  flex: 1;
-  overflow-y: auto;
-}
-
-/* --------------------------------------------------------
-   Cards
--------------------------------------------------------- */
+/*==============================================================================
+  5. Content Components
+==============================================================================*/
+/* 5.1 Cards */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
+
 .card {
   background: var(--card-bg);
   border-radius: var(--border-radius);
@@ -219,67 +256,91 @@ body {
   padding: var(--spacing-md);
   transition: transform 0.2s;
 }
-.card:hover { transform: translateY(-2px); }
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
 .card h2 {
   font-family: var(--heading-font);
   margin-bottom: 0.25rem;
   color: var(--brand-color);
   font-size: 1.1rem;
 }
-.card p { font-size: 0.9rem; color: var(--text-muted); }
 
-/* --------------------------------------------------------
-   Table section
--------------------------------------------------------- */
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* 5.2 Tables */
 .table-section {
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
+
 .table-section h3 {
-  /* font-family: var(--heading-font); */
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   color: var(--brand-color);
   font-size: 1.2rem;
+  font-weight: 600;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: var(--spacing-sm);
-  font-size: 0.9rem;
 }
-thead { background: #f2f2f2; }
-th, td {
-  text-align: left;
-  padding: 0.75rem;
-  border-bottom: 1px solid #e6e6e6;
-}
-th { font-weight: 600; color: #444; }
-tbody tr:hover { background: #fafafa; }
 
-/* --------------------------------------------------------
-   Charts placeholder
--------------------------------------------------------- */
+thead {
+  border-bottom: 2px solid var(--brand-color);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+}
+
+th {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding-bottom: 1.2rem;
+}
+
+td {
+  color: var(--text-color);
+  border-bottom: 1px solid var(--body-bg);
+}
+
+tbody tr:hover {
+  background: var(--body-bg);
+}
+
+/* 5.3 Charts */
 .charts {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
+
 .chart-card {
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: var(--spacing-md);
 }
+
 .chart-card h2 {
   font-family: var(--heading-font);
   margin-bottom: var(--spacing-md);
   color: var(--brand-color);
   font-size: 1.1rem;
 }
+
 .chart-placeholder {
   width: 100%;
   height: 250px;
@@ -292,12 +353,283 @@ tbody tr:hover { background: #fafafa; }
   font-size: 1rem;
 }
 
-/* --------------------------------------------------------
-   Responsive adjustments
--------------------------------------------------------- */
+/*==============================================================================
+  6. UI Components
+==============================================================================*/
+/* 6.1 Buttons */
+.btn-delete {
+  padding: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.5rem;
+  opacity: 0.6;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.btn-delete:hover {
+  opacity: 1;
+  color: #1f2a37;
+  background: none;
+}
+
+/* Common button styles */
+.btn-save,
+.btn-cancel {
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  font-family: var(--body-font);
+  margin-right: 0.5rem;
+}
+
+/* Primary button (Save) */
+.btn-save {
+  background: var(--brand-color);
+  border: 1px solid var(--brand-color);
+  color: white;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
+}
+
+/* Secondary button (Cancel) */
+.btn-cancel {
+  background: none;
+  border: 1px solid var(--brand-color);
+  color: var(--brand-color);
+}
+
+.btn-cancel:hover {
+  background: var(--brand-color);
+  color: white;
+}
+
+/* Remove any browser-specific button styling */
+button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hamburger-line {
+  width: 18px;
+  height: 2px;
+  background-color: var(--text-color-light);
+}
+
+/* 6.2 Forms */
+.edit-form {
+  padding: 1.5rem 1rem;
+  background: var(--body-bg);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.edit-form input {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--text-muted);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  flex: 1;
+  background: white;
+}
+
+.edit-form input:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+/* Custom Roles Dropdown */
+.roles-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.roles-display {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--text-muted);
+  border-radius: var(--border-radius);
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 38px;
+}
+
+.roles-display:hover {
+  border-color: var(--brand-color);
+}
+
+.dropdown-arrow {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+
+.roles-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--brand-color);
+  border-radius: var(--border-radius);
+  margin-top: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.role-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.role-option:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+}
+
+.role-option.selected {
+  background-color: rgba(212, 175, 55, 0.2);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--text-muted);
+  border-radius: 3px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-color);
+  font-size: 12px;
+  background: white;
+}
+
+.role-option.selected .checkbox {
+  border-color: var(--brand-color);
+  background: var(--brand-color);
+  color: white;
+}
+
+/* Remove old multi-select styles */
+.roles-select,
+.roles-select option,
+.roles-select option:checked,
+.roles-select option:hover,
+.edit-form .edit-fields::after {
+  display: none;
+}
+
+/*==============================================================================
+  7. Overlays & Modals
+==============================================================================*/
+.side-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.profile-side-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 300px;
+  background: var(--card-bg);
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-lg);
+  z-index: 1001;
+  animation: slideIn 0.3s ease-out;
+}
+
+.profile-side-panel h3 {
+  color: var(--brand-color);
+  margin-bottom: var(--spacing-lg);
+  font-family: var(--heading-font);
+  font-size: 1.2rem;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--brand-color);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.profile-info p {
+  margin: 0;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--body-bg);
+}
+
+.profile-info p:last-child {
+  border-bottom: none;
+}
+
+.profile-info strong {
+  color: var(--text-muted);
+  margin-right: var(--spacing-sm);
+}
+
+/*==============================================================================
+  8. Animations
+==============================================================================*/
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/*==============================================================================
+  9. Responsive Design
+==============================================================================*/
 @media (max-width: 768px) {
-  .sidebar { left: -100%; }
-  .sidebar.open { left: 0; }
-  .main.shifted { margin-left: 0; }
-  .cards { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .sidebar {
+    left: -100%;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .main.shifted {
+    margin-left: 0;
+  }
+  
+  .cards {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
 }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_BASE } from './config';
+import api from './auth/axiosInstance';
 import { useAuth } from './auth/AuthContext';
 import './login.css';
 
@@ -42,14 +41,12 @@ export default function Login() {
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrors({});
 
     try {
-      const response = await axios.post(
-        `${API_BASE}/auth/login`,
-        formData,
-        {
-          headers: { 'Content-Type': 'application/json' }
-        }
+      const response = await api.post(
+        '/auth/login',
+        formData
       );
 
       login(response.data.token);
@@ -64,7 +61,7 @@ export default function Login() {
             setErrors({ form: 'Please fill in all fields' });
             break;
           default:
-            setErrors({ form: 'An error occurred. Please try again.' });
+            setErrors({ form: err.response.data?.message || 'An error occurred. Please try again.' });
         }
       } else if (err.request) {
         setErrors({ form: 'Cannot connect to server. Please check your internet connection.' });
