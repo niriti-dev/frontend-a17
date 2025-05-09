@@ -8,7 +8,7 @@ from http import HTTPStatus
 from flask import Flask, request
 from flask_restx import Resource, Api, fields  # Namespace
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 import werkzeug.exceptions as wz
 
@@ -161,6 +161,7 @@ class ManuscriptRetrieveAll(Resource):
     """
     Retrieve all manuscript entries
     """
+    @jwt_required()
     @api.response(HTTPStatus.OK, "Manuscripts retrieved successfully")
     def get(self):
         """
@@ -235,11 +236,12 @@ class People(Resource):
     and deleting journal people.
     """
 
+    @jwt_required()
     def get(self):
         """
-        Retrieve all journal people.
+        The `get()` method returns all people in the database.
         """
-        return ppl.read()
+        return {RETURN: ppl.get_people()}
 
 
 @api.route(PEOPLE_GET_EP)
