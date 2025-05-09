@@ -41,8 +41,8 @@ export default function Users() {
 
   const handleDelete = async email => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-      await deleteUser(email);
-      if (editingEmail === email) setEditingEmail(null);
+    await deleteUser(email);
+    if (editingEmail === email) setEditingEmail(null);
     }
   };
 

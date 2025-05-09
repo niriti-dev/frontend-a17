@@ -10,7 +10,7 @@ export default function GuestTopbar() {
         <div className="nav-left"></div>
         <div className="nav-right">
           <NavLink to="/login" className={btn}>Log&nbsp;In</NavLink>
-          <NavLink to="/signup" className={btn}>Sign&nbsp;Up</NavLink>
+        <NavLink to="/signup" className={btn}>Sign&nbsp;Up</NavLink>
         </div>
       </nav>
     </header>

@@ -2,9 +2,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   fetchManuscripts,
-  addManuscript as apiAdd,
+  createManuscript,
   updateManuscript as apiUpdate,
   deleteManuscript as apiDelete,
+  processManuscriptAction
 } from './manuscriptsApi.js';
 
 export default function useManuscripts() {
@@ -20,7 +21,7 @@ export default function useManuscripts() {
       setError(null);
     } catch (err) {
       setError(err);
-      if (err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED') {
+      if (err.response?.status === 401) {
         localStorage.removeItem('token');
         window.location.href = '/login';
       }
@@ -34,10 +35,10 @@ export default function useManuscripts() {
   /* CRUD wrappers */
   const addManuscript    = async data       => {
     try {
-      await apiAdd(data);
+      await createManuscript(data);
       await load();
     } catch (err) {
-      if (err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED') {
+      if (err.response?.status === 401) {
         localStorage.removeItem('token');
         window.location.href = '/login';
       }
@@ -49,7 +50,7 @@ export default function useManuscripts() {
       await apiUpdate(id, data);
       await load();
     } catch (err) {
-      if (err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED') {
+      if (err.response?.status === 401) {
         localStorage.removeItem('token');
         window.location.href = '/login';
       }
@@ -61,7 +62,7 @@ export default function useManuscripts() {
       await apiDelete(id);
       await load();
     } catch (err) {
-      if (err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED') {
+      if (err.response?.status === 401) {
         localStorage.removeItem('token');
         window.location.href = '/login';
       }
@@ -69,5 +70,18 @@ export default function useManuscripts() {
     }
   };
 
-  return { manuscripts, loading, error, addManuscript, updateManuscript, deleteManuscript };
+  const processAction = async (id, action, comment) => {
+    try {
+      await processManuscriptAction(id, action, comment);
+      await load();
+    } catch (err) {
+      if (err.response?.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      }
+      throw err;
+    }
+  };
+
+  return { manuscripts, loading, error, addManuscript, updateManuscript, deleteManuscript, processAction };
 }

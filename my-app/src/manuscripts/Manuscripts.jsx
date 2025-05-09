@@ -4,12 +4,20 @@ import useManuscripts from './useManuscripts';
 import { useAuth } from '../auth/AuthContext';
 import './manuscripts.css';
 
+const ACTIONS = {
+  ACCEPT: 'accept',
+  REJECT: 'reject',
+  REVISE: 'revise'
+};
+
 export default function Manuscripts() {
   const { manuscripts, loading, error: initialError,
-          updateManuscript, deleteManuscript } = useManuscripts();
+          updateManuscript, deleteManuscript, processAction } = useManuscripts();
   const { logout } = useAuth();
 
   const [editingId, setEditingId] = useState(null);
+  const [actionId, setActionId] = useState(null);
+  const [comment, setComment] = useState('');
   const [form, setForm] = useState({ author: '', title: '', text: '' });
   const [error, setError] = useState(initialError);
 
@@ -27,9 +35,6 @@ export default function Manuscripts() {
         default:
           setError(err.response.data?.message || 'Operation failed');
       }
-    } else if (err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED') {
-      logout();
-      window.location.href = '/login';
     } else {
       setError('An unexpected error occurred');
     }
@@ -42,19 +47,33 @@ export default function Manuscripts() {
       title: m.latest_version.title,
       text: m.latest_version.text 
     });
+    setActionId(null);
+  };
+
+  const startAction = (m) => {
+    setActionId(m._id);
+    setComment('');
+    setEditingId(null);
   };
 
   const saveEdit = async e => {
     e.preventDefault();
     try {
       await updateManuscript(editingId, {
-        author: form.author,
-        latest_version: { 
-          title: form.title,
-          text: form.text 
-        },
+        title: form.title,
+        text: form.text 
       });
       setEditingId(null);
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
+  const handleAction = async (action) => {
+    try {
+      await processAction(actionId, action, comment);
+      setActionId(null);
+      setComment('');
     } catch (err) {
       handleError(err);
     }
@@ -65,14 +84,11 @@ export default function Manuscripts() {
       try {
         await deleteManuscript(id);
         if (editingId === id) setEditingId(null);
+        if (actionId === id) setActionId(null);
       } catch (err) {
         handleError(err);
       }
     }
-  };
-
-  const handleRowClick = (m) => {
-    console.log('Manuscript ID:', m._id);
   };
 
   if (loading) return <p className="state">Loading...</p>;
@@ -81,7 +97,7 @@ export default function Manuscripts() {
   return (
     <section className="table-section">
       <div className="section-header">
-        <h3>Manuscripts</h3>
+      <h3>Manuscripts</h3>
       </div>
 
       <table>
@@ -90,19 +106,27 @@ export default function Manuscripts() {
             <th>Author</th>
             <th>Title</th>
             <th>Text Preview</th>
-            <th></th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {manuscripts.map((m) => (
             <React.Fragment key={m._id}>
-              <tr onClick={() => handleRowClick(m)}
-                  onDoubleClick={() => startEdit(m)}
-                  style={{ cursor:'pointer' }}>
-                <td>{m.author}</td>
-                <td>{m.latest_version.title}</td>
+              <tr onDoubleClick={() => startEdit(m)}
+                    style={{ cursor:'pointer' }}>
+                  <td>{m.author}</td>
+                  <td>{m.latest_version.title}</td>
                 <td>{m.latest_version.text?.substring(0, 100)}...</td>
                 <td style={{ textAlign: 'right' }}>
+                  <button 
+                    className="btn-action"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      startAction(m);
+                    }}
+                  >
+                    ⚡
+                  </button>
                   <button 
                     className="btn-delete"
                     onClick={(e) => {
@@ -112,21 +136,14 @@ export default function Manuscripts() {
                   >
                     ×
                   </button>
-                </td>
-              </tr>
+                  </td>
+                </tr>
 
               {editingId === m._id && (
-                <tr className="edit-row">
-                  <td colSpan="4">
-                    <form onSubmit={saveEdit} className="edit-form">
+                  <tr className="edit-row">
+                  <td colSpan="5">
+                      <form onSubmit={saveEdit} className="edit-form">
                       <div className="edit-fields">
-                        <input 
-                          name="author" 
-                          value={form.author}
-                          onChange={e => setForm({...form, author: e.target.value})}
-                          placeholder="Author" 
-                          required 
-                        />
                         <input 
                           name="title"  
                           value={form.title}
@@ -161,11 +178,58 @@ export default function Manuscripts() {
                           Cancel
                         </button>
                       </div>
-                    </form>
+                      </form>
+                    </td>
+                  </tr>
+                )}
+
+              {actionId === m._id && (
+                <tr className="edit-row">
+                  <td colSpan="5">
+                    <div className="action-form">
+                      <div className="action-fields">
+                        <textarea
+                          value={comment}
+                          onChange={e => setComment(e.target.value)}
+                          placeholder="Add a comment (optional)"
+                          className="action-comment"
+                        />
+                      </div>
+                      <div className="action-buttons">
+                        <button 
+                          type="button"
+                          className="btn-action accept"
+                          onClick={() => handleAction(ACTIONS.ACCEPT)}
+                        >
+                          Accept
+                        </button>
+                        <button 
+                          type="button"
+                          className="btn-action revise"
+                          onClick={() => handleAction(ACTIONS.REVISE)}
+                        >
+                          Revise
+                        </button>
+                        <button 
+                          type="button"
+                          className="btn-action reject"
+                          onClick={() => handleAction(ACTIONS.REJECT)}
+                        >
+                          Reject
+                        </button>
+                        <button 
+                          type="button"
+                          className="btn-cancel"
+                          onClick={() => setActionId(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               )}
-            </React.Fragment>
+              </React.Fragment>
           ))}
         </tbody>
       </table>

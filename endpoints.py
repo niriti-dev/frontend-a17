@@ -50,6 +50,7 @@ MANUSCRIPTS_CREATE_EP = f"{MANUSCRIPTS_EP}/create"
 MANUSCRIPTS_GET_EP = f"{MANUSCRIPTS_EP}/<id>"
 MANUSCRIPTS_DEL_EP = f"{MANUSCRIPTS_EP}/<id>"
 MANUSCRIPTS_UPDATE_EP = f"{MANUSCRIPTS_EP}/update"  # for later use
+MANUSCRIPTS_ACTION_EP = f"{MANUSCRIPTS_EP}/receive_action"
 
 
 MANUSCRIPT_CREATE_FLDS = api.model(
@@ -160,14 +161,16 @@ class ManuscriptRetrieveAll(Resource):
     """
     Retrieve all manuscript entries
     """
-
     @api.response(HTTPStatus.OK, "Manuscripts retrieved successfully")
     def get(self):
         """
         Retrieve all manuscripts
         """
-        all_manu = ms.read_all_manuscripts()
-        return all_manu
+        try:
+            all_manu = ms.read_all_manuscripts()
+            return all_manu
+        except Exception as e:
+            return {'error': str(e)}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @api.route(HELLO_EP)
@@ -515,6 +518,44 @@ class Login(Resource):
         # Create access token
         access_token = create_access_token(identity=email)
         return {"token": access_token}, HTTPStatus.OK
+
+
+@api.route(MANUSCRIPTS_ACTION_EP)
+class ManuscriptAction(Resource):
+    """
+    Process an action on a manuscript
+    """
+    @api.expect(api.model(
+        "ManuscriptAction",
+        {
+            "id": fields.String(required=True),
+            "action": fields.String(required=True),
+            "comment": fields.String(required=False),
+        },
+    ))
+    @api.response(HTTPStatus.OK, "Action processed successfully")
+    @api.response(HTTPStatus.NOT_FOUND, "Manuscript not found")
+    @api.response(HTTPStatus.BAD_REQUEST, "Invalid action or missing fields")
+    def put(self):
+        """
+        Process an action (accept/reject/revise) on a manuscript
+        """
+        data = request.get_json()
+        manuscript_id = data.get("id", "").strip()
+        action = data.get("action", "").strip().lower()
+        comment = data.get("comment", "").strip()
+
+        if not manuscript_id or not action:
+            raise wz.BadRequest("Missing manuscript ID or action")
+
+        if action not in ["accept", "reject", "revise"]:
+            raise wz.BadRequest("Invalid action. Must be one of: accept, reject, revise")
+
+        result = ms.process_manuscript_action(manuscript_id, action, comment)
+        if not result:
+            raise wz.NotFound(f"No manuscript found with ID {manuscript_id}")
+
+        return result
 
 
 if __name__ == "__main__":

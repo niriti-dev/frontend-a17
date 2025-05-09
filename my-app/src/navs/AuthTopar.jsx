@@ -34,7 +34,7 @@ export default function Topbar() {
       <nav className="topbar-nav">
         <div className="nav-left">
           <NavLink to="/users" className={btn}>Users</NavLink>
-          <NavLink to="/manuscripts" className={btn}>Manuscripts</NavLink>
+        <NavLink to="/manuscripts" className={btn}>Manuscripts</NavLink>
         </div>
         
         <div className="nav-right">
@@ -64,8 +64,8 @@ export default function Topbar() {
               <p><strong>Roles:</strong> {Array.isArray(user?.roles) ? user.roles.join(', ') : user?.roles || 'N/A'}</p>
             </div>
           </div>
-        </>
-      )}
+          </>
+        )}
     </header>
   );
 }

@@ -205,10 +205,10 @@ function Users() {
               <tr onClick={() => handleRowClick(user)}
                   onDoubleClick={() => startEdit(user)}
                   style={{ cursor:'pointer' }}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.affiliation}</td>
-                <td>{user.roles}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.affiliation}</td>
+              <td>{user.roles}</td>
                 <td style={{ textAlign: 'right' }}>
                   <button className="btn-delete"
                           onClick={(e) => { 
@@ -243,7 +243,7 @@ function Users() {
                         />
                       </div>
                       <div className="inline-buttons">
-                        <button 
+                  <button
                           type="button"
                           className="btn-save"
                           onClick={(e) => {
@@ -252,18 +252,18 @@ function Users() {
                           }}
                         >
                           Save
-                        </button>
-                        <button 
+                  </button>
+                  <button
                           type="button"
                           className="btn-cancel"
                           onClick={() => setEditingId(null)}
-                        >
+                  >
                           Cancel
-                        </button>
-                      </div>
+                  </button>
+                </div>
                     </form>
-                  </td>
-                </tr>
+              </td>
+            </tr>
               )}
             </React.Fragment>
           ))}
