@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchUsers, updateUser, deleteUser } from './users/usersApi';
 import { useAuth } from './auth/AuthContext';
+import DeleteUserForm from './DeleteUserForm';
 import './users.css';
 
 // Role definitions matching the backend
@@ -119,7 +120,7 @@ function Users() {
       name: user.name,
       email: user.email,
       affiliation: user.affiliation,
-      roles: user.roles.split(', ')
+      roles: Array.isArray(user.roles) ? user.roles : user.roles.split(', ')
     });
   };
 
@@ -142,18 +143,10 @@ function Users() {
     e.preventDefault();
     try {
       setError(null);
-      const updatedUser = await updateUser(editingId, {
-        ...formValues,
-        roles: formValues.roles
-      });
+      await updateUser(editingId, formValues);
       
-      setUsers(users.map(u => 
-        u._id === editingId ? { 
-          ...u, 
-          ...updatedUser,
-          roles: updatedUser.roles.join(', ')
-        } : u
-      ));
+      // Reload the full users list
+      await loadUsers();
       
       setEditingId(null);
     } catch (err) {
@@ -161,13 +154,13 @@ function Users() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (user) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
         setError(null);
-        await deleteUser(id);
-        setUsers(users.filter(u => u._id !== id));
-        if (editingId === id) {
+        await deleteUser(user.email);
+        setUsers(users.filter(u => u.email !== user.email));
+        if (editingId === user._id) {
           setEditingId(null);
         }
       } catch (err) {
@@ -208,12 +201,12 @@ function Users() {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.affiliation}</td>
-              <td>{user.roles}</td>
+              <td>{Array.isArray(user.roles) ? user.roles.join(', ') : user.roles}</td>
                 <td style={{ textAlign: 'right' }}>
                   <button className="btn-delete"
                           onClick={(e) => { 
                             e.stopPropagation(); 
-                            handleDelete(user._id); 
+                            handleDelete(user); 
                           }}>×</button>
                 </td>
               </tr>

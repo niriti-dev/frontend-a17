@@ -25,14 +25,30 @@ export default function useUsers() {
 
   useEffect(() => { load(); }, [load]);
 
-  const updateUser = async (email, data) => {
-    await apiUpdate(email, data);
-    await load();
+  const updateUser = async (id, data) => {
+    try {
+      await apiUpdate(id, data);
+      await load();
+    } catch (err) {
+      if (err.response?.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      }
+      throw err;
+    }
   };
 
-  const deleteUser = async (email) => {
-    await apiDelete(email);
-    await load();
+  const deleteUser = async (id) => {
+    try {
+      await apiDelete(id);
+      await load();
+    } catch (err) {
+      if (err.response?.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      }
+      throw err;
+    }
   };
 
   const addUser = () => {
