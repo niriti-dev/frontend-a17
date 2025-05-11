@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { fetchUsers, updateUser, deleteUser } from './users/usersApi';
 import { useAuth } from './auth/AuthContext';
 import DeleteUserForm from './DeleteUserForm';
-import './users.css';
+import './Users.css';
 
 // Role definitions matching the backend
 const ROLES = {
