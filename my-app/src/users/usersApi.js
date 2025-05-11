@@ -1,13 +1,21 @@
 import api from '../auth/axiosInstance';
 
 // READ all users
-export async function fetchUsers() {
-  const res = await api.get('/people');
-  return Object.values(res.data).map(p => ({
-    ...p,
-    roles: Array.isArray(p.roles) ? p.roles : p.roles.split(', ')
-  }));
-}
+export const fetchUsers = async () => {
+  try {
+    const response = await api.get('/people');
+    // Convert the return object into an array of users
+    const usersArray = Object.values(response.data.return).map(p => ({
+      ...p,
+      roles: p.roles || [], 
+      id: p._id 
+    }));
+    return usersArray;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+};
 
 // READ single user
 export async function getUser(id) {
@@ -35,7 +43,7 @@ export async function updateUser(id, payload) {
 }
 
 // DELETE user
-export async function deleteUser(email) {
-  const res = await api.delete(`/people/${encodeURIComponent(email)}`);
+export async function deleteUser(id) {
+  const res = await api.delete(`/people/${encodeURIComponent(id)}`);
   return res.data;
 }

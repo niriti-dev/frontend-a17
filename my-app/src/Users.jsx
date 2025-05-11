@@ -158,8 +158,8 @@ function Users() {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
         setError(null);
-        await deleteUser(user.email);
-        setUsers(users.filter(u => u.email !== user.email));
+        await deleteUser(user._id);
+        setUsers(users.filter(u => u._id !== user._id));
         if (editingId === user._id) {
           setEditingId(null);
         }

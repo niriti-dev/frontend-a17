@@ -76,7 +76,7 @@ function SignUp() {
         }
       );
 
-      const createdUser = createResponse.data.person;
+      const createdUser = createResponse.data.return;
 
       // Login with new credentials
       const loginResponse = await axios.post(
@@ -96,18 +96,23 @@ function SignUp() {
 
     } catch (err) {
       if (err.response) {
-        switch (err.response.status) {
-          case 400:
-            setErrors({ form: 'Please fill in all fields correctly' });
-            break;
-          case 409:
-            setErrors({ email: 'This email is already registered' });
-            break;
-          case 422:
-            setErrors({ form: err.response.data.message || 'Invalid input data' });
-            break;
-          default:
-            setErrors({ form: 'An error occurred. Please try again.' });
+        const errorMessage = err.response.data?.message || '';
+        if (errorMessage.includes('duplicate email')) {
+          setErrors({ email: 'This email is already registered' });
+        } else {
+          switch (err.response.status) {
+            case 400:
+              setErrors({ form: errorMessage || 'Please fill in all fields correctly' });
+              break;
+            case 409:
+              setErrors({ email: 'This email is already registered' });
+              break;
+            case 422:
+              setErrors({ form: errorMessage || 'Invalid input data' });
+              break;
+            default:
+              setErrors({ form: 'An error occurred. Please try again.' });
+          }
         }
       } else if (err.request) {
         setErrors({ form: 'Cannot connect to server. Please check your internet connection.' });

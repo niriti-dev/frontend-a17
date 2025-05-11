@@ -12,37 +12,38 @@ export default function Users() {
     deleteUser,   // DELETE
   } = useUsers();
 
-  const [editingEmail, setEditingEmail] = useState(null);   
-  const [formValues,   setFormValues]   = useState({});     
+  const [editingId, setEditingId] = useState(null);   
+  const [formValues, setFormValues] = useState({});     
 
 
   const startEdit = user => {
-    setEditingEmail(user.email);
+    setEditingId(user.id);
     setFormValues({
-      name:        user.name,
+      name: user.name,
       affiliation: user.affiliation,
-      roles:       user.roles,                
+      roles: user.roles,
+      email: user.email,  // Include email in form values
     });
   };
 
   const handleChange = e =>
     setFormValues(f => ({ ...f, [e.target.name]: e.target.value }));
 
-  const cancelEdit = () => setEditingEmail(null);
+  const cancelEdit = () => setEditingId(null);
 
   const saveEdit = async e => {
     e.preventDefault();
-    await updateUser(editingEmail, {
+    await updateUser(editingId, {
       ...formValues,
       roles: formValues.roles.split(',').map(r => r.trim()),
     });
-    setEditingEmail(null);
+    setEditingId(null);
   };
 
-  const handleDelete = async email => {
+  const handleDelete = async id => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-    await deleteUser(email);
-    if (editingEmail === email) setEditingEmail(null);
+      await deleteUser(id);
+      if (editingId === id) setEditingId(null);
     }
   };
 
@@ -65,20 +66,20 @@ export default function Users() {
         </thead>
         <tbody>
           {users.map(u => (
-            <React.Fragment key={u.email}>
+            <React.Fragment key={u.id}>
               <tr onDoubleClick={() => startEdit(u)}>
                 <td>{u.name}</td>
                 <td>{u.email}</td>
                 <td>{u.affiliation}</td>
                 <td>{u.roles.join(', ')}</td>
                 <td style={{ textAlign: 'right' }}>
-                  <button className="btn-delete" onClick={() => handleDelete(u.email)}>
+                  <button className="btn-delete" onClick={() => handleDelete(u.id)}>
                     ×
                   </button>
                 </td>
               </tr>
 
-              {editingEmail === u.email && (
+              {editingId === u.id && (
                 <tr>
                   <td colSpan="5">
                     <form onSubmit={saveEdit} className="edit-form">
@@ -87,6 +88,13 @@ export default function Users() {
                         value={formValues.name}
                         onChange={handleChange}
                         placeholder="Name"
+                        required
+                      />
+                      <input
+                        name="email"
+                        value={formValues.email}
+                        onChange={handleChange}
+                        placeholder="Email"
                         required
                       />
                       <input
