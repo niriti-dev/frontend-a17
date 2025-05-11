@@ -10,7 +10,7 @@ import GuestTopbar from './navs/GuestTopbar';
 import Users       from './Users';
 import Manuscripts from './manuscripts/Manuscripts';
 import Login       from './Login';
-import SignUp      from './Signup';
+import SignUp from './Signup';
 
 import { API_BASE } from './config';
 
