@@ -40,7 +40,7 @@ function AppContent() {
         <Route element={<ProtectedRoute />}>
           <Route path="/users"       element={<Users />} />
           <Route path="/manuscripts" element={<Manuscripts />} />
-          <Route path="/"            element={<Navigate to="/users" />} />
+          <Route path="/"            element={<Navigate to="/login" />} />
         </Route>
       </Routes>
     </>
