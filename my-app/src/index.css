@@ -1,24 +1,4 @@
 /*==============================================================================
-  TABLE OF CONTENTS:
-  1. Design Tokens & Variables
-  2. Reset & Base Styles
-  3. Layout & Structure
-  4. Navigation Components
-    4.1 Sidebar
-    4.2 Topbar
-  5. Content Components
-    5.1 Cards
-    5.2 Tables
-    5.3 Charts
-  6. UI Components
-    6.1 Buttons
-    6.2 Forms
-  7. Overlays & Modals
-  8. Animations
-  9. Responsive Design
-==============================================================================*/
-
-/*==============================================================================
   1. Design Tokens & Variables
 ==============================================================================*/
 :root {
