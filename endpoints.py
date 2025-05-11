@@ -15,7 +15,7 @@ import werkzeug.exceptions as wz
 import data.people as ppl
 import data.text as txt
 import data.manuscripts.manuscripts as ms
-from data.auth import authenticate_user
+from data.auth import authenticate_user, sanitize_user
 
 
 app = Flask(__name__)
@@ -68,7 +68,7 @@ class ManuscriptCreate(Resource):
     """
     Create a new manuscript entry.
     """
-
+    @jwt_required()
     @api.expect(MANUSCRIPT_CREATE_FLDS)
     @api.response(HTTPStatus.CREATED, "Manuscript successfully created")
     # @api.response(HTTPStatus.BAD_REQUEST,
@@ -86,7 +86,6 @@ class ManuscriptCreate(Resource):
             raise wz.BadRequest("Missing one or more required fields")
 
         manu = ms.create_manuscript(author, title, text)
-        print(manu)
         if not manu:
             raise wz.InternalServerError("Manuscript creation failed.")
 
@@ -119,7 +118,7 @@ class ManuscriptResource(Resource):
     """
     GET and DELETE /manuscripts/{id}
     """
-
+    @jwt_required()
     @api.response(HTTPStatus.OK, "Manuscript retrieved successfully")
     @api.response(HTTPStatus.BAD_REQUEST, "Missing or invalid manuscript id")
     @api.response(HTTPStatus.NOT_FOUND, "Manuscript not found")
@@ -138,6 +137,7 @@ class ManuscriptResource(Resource):
             "text": latest_manu.get(ms.TEXT),
         }
 
+    @jwt_required()
     @api.response(HTTPStatus.OK, "Manuscript successfully deleted")
     @api.response(HTTPStatus.NOT_FOUND, "Manuscript not found")
     def delete(self, id):
@@ -235,7 +235,6 @@ class People(Resource):
     This class handles creating, reading, updating
     and deleting journal people.
     """
-
     @jwt_required()
     def get(self):
         """
@@ -250,7 +249,7 @@ class Person(Resource):
     This class handles creating, reading, updating
     and deleting journal people.
     """
-
+    @jwt_required()
     def get(self, email):
         """
         Retrieve a journal person by email.
@@ -261,6 +260,7 @@ class Person(Resource):
         else:
             raise wz.NotFound(f"No such record: {email}")
 
+    @jwt_required()
     @api.response(HTTPStatus.OK, "Success.")
     @api.response(HTTPStatus.NOT_FOUND, "No such person.")
     def delete(self, email):
@@ -504,7 +504,7 @@ class Login(Resource):
     @api.response(HTTPStatus.UNAUTHORIZED, "Invalid credentials")
     def post(self):
         """
-        Authenticate user and return JWT token
+        Authenticate user and return JWT token and user data
         """
         data = request.get_json()
         email = data.get("email", "").strip()
@@ -519,7 +519,12 @@ class Login(Resource):
 
         # Create access token
         access_token = create_access_token(identity=email)
-        return {"token": access_token}, HTTPStatus.OK
+        
+        # Return both token and sanitized user data
+        return {
+            "token": access_token,
+            "user": sanitize_user(user)
+        }, HTTPStatus.OK
 
 
 @api.route(MANUSCRIPTS_ACTION_EP)
@@ -527,6 +532,7 @@ class ManuscriptAction(Resource):
     """
     Process an action on a manuscript
     """
+    @jwt_required()
     @api.expect(api.model(
         "ManuscriptAction",
         {

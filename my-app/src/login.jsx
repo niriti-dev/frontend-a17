@@ -44,12 +44,9 @@ export default function Login() {
     setErrors({});
 
     try {
-      const response = await api.post(
-        '/auth/login',
-        formData
-      );
-
-      login(response.data.token);
+      const response = await api.post('/auth/login', formData);
+      console.log('Login response:', response.data);
+      login(response.data.token, response.data.user);
       navigate('/users', { replace: true });
     } catch (err) {
       if (err.response) {

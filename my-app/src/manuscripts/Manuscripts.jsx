@@ -1,7 +1,6 @@
 // src/manuscripts/Manuscripts.jsx
 import React, { useState } from 'react';
 import useManuscripts from './useManuscripts';
-import { useAuth } from '../auth/AuthContext';
 import './manuscripts.css';
 
 const ACTIONS = {
@@ -13,32 +12,12 @@ const ACTIONS = {
 export default function Manuscripts() {
   const { manuscripts, loading, error: initialError,
           updateManuscript, deleteManuscript, processAction } = useManuscripts();
-  const { logout } = useAuth();
 
   const [editingId, setEditingId] = useState(null);
   const [actionId, setActionId] = useState(null);
   const [comment, setComment] = useState('');
   const [form, setForm] = useState({ author: '', title: '', text: '' });
   const [error, setError] = useState(initialError);
-
-  const handleError = (err) => {
-    console.error('Operation failed:', err);
-    if (err.response) {
-      switch (err.response.status) {
-        case 401:
-          logout();
-          window.location.href = '/login';
-          break;
-        case 404:
-          setError('Manuscript not found');
-          break;
-        default:
-          setError(err.response.data?.message || 'Operation failed');
-      }
-    } else {
-      setError('An unexpected error occurred');
-    }
-  };
 
   const startEdit = (m) => {
     setEditingId(m._id);
@@ -65,7 +44,7 @@ export default function Manuscripts() {
       });
       setEditingId(null);
     } catch (err) {
-      handleError(err);
+      setError(err.message);
     }
   };
 
@@ -75,7 +54,7 @@ export default function Manuscripts() {
       setActionId(null);
       setComment('');
     } catch (err) {
-      handleError(err);
+      setError(err.message);
     }
   };
 
@@ -86,7 +65,7 @@ export default function Manuscripts() {
         if (editingId === id) setEditingId(null);
         if (actionId === id) setActionId(null);
       } catch (err) {
-        handleError(err);
+        setError(err.message);
       }
     }
   };

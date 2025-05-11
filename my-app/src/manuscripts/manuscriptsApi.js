@@ -1,24 +1,13 @@
 // src/manuscripts/manuscriptsApi.js
-import axios from 'axios';
-import { API_BASE } from '../config'
+import api from '../auth/axiosInstance';
 
 export async function fetchManuscripts() {
-  const res = await axios.get(`${API_BASE}/manuscripts`);
+  const res = await api.get('/manuscripts');
   return Object.values(res.data);
 }
 
-export async function getManuscript(id) {
-  const res = await axios.get(`${API_BASE}/manuscripts/${encodeURIComponent(id)}`);
-  return res.data;
-}
-
-export async function getManuscriptsByAuthor(authorName) {
-  const res = await axios.get(`${API_BASE}/manuscripts/author/${encodeURIComponent(authorName)}`);
-  return res.data;
-}
-
 export async function createManuscript(data) {
-  const res = await axios.post(`${API_BASE}/manuscripts/create`, {
+  const res = await api.post('/manuscripts/create', {
     author: data.author.trim(),
     title: data.title.trim(),
     text: data.text.trim()
@@ -27,7 +16,7 @@ export async function createManuscript(data) {
 }
 
 export async function updateManuscript(id, data) {
-  const res = await axios.put(`${API_BASE}/manuscripts/update`, {
+  const res = await api.put('/manuscripts/update', {
     id: id,
     title: data.title.trim(),
     text: data.text.trim()
@@ -36,12 +25,12 @@ export async function updateManuscript(id, data) {
 }
 
 export async function deleteManuscript(id) {
-  const res = await axios.delete(`${API_BASE}/manuscripts/${encodeURIComponent(id)}`);
+  const res = await api.delete(`/manuscripts/${encodeURIComponent(id)}`);
   return res.data;
 }
 
 export async function processManuscriptAction(id, action, comment = '') {
-  const res = await axios.put(`${API_BASE}/manuscripts/receive_action`, {
+  const res = await api.put('/manuscripts/receive_action', {
     id: id,
     action: action.toLowerCase(),
     comment: comment.trim()
